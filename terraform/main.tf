@@ -3,7 +3,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = "~> 6.73"
     }
   }
   # Store the state file locally for now (we will move this to S3 later)
