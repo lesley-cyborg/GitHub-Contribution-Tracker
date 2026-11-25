@@ -1,20 +1,42 @@
-
+# Dependencies
 node_modules
+
+# Next.js build outputs
 .next
 out
 dist
+
+# Testing & Coverage
 coverage
+
+# Vercel specific
 .vercel
+
+# Logs & OS files
 *.log
 .DS_Store
-drizzle/meta
+
+# IDEs
 .idea
 .vscode
 
+# Environment variables (CRITICAL)
+.env
+.env.*
+!.env.example
+
+# Stripe Projects CLI
 .projects/cache
 .projects/vault
 .projects/state.test.json
 .projects/state.local.test.json
-.env
-.env.*
-!.env.example
+
+# Terraform (CRITICAL for DevOps)
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+
+# Drizzle ORM
+drizzle/meta
+# NOTE: Ensure your actual .sql migration files (e.g., drizzle/*.sql) are NOT ignored!

@@ -1,0 +1,4 @@
+db_password          = "change-me"
+auth_secret          = "generate with: node -e \"console.log(require('crypto').randomBytes(32).toString('base64'))\""
+github_client_id     = "your-oauth-client-id"
+github_client_secret = "your-oauth-client-secret"

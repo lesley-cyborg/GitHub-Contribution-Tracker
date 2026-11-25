@@ -1,4 +1,36 @@
 services:
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: "no"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgres://tracker:tracker@postgres:5432/tracker
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: ["scripts/migrate.mjs"]
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgres://tracker:tracker@postgres:5432/tracker
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      AUTH_URL: ${AUTH_URL:-http://localhost:3000}
+      AUTH_TRUST_HOST: "true"
+    ports:
+      - "3000:3000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
   postgres:
     image: postgres:16-alpine
     restart: unless-stopped
