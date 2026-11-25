@@ -173,19 +173,20 @@ This is a portfolio and learning project, and these are the honest gaps:
 ### Run locally
 
 ```bash
-npm install
-cp .env.example .env     # DATABASE_URL, AUTH_SECRET, AUTH_GITHUB_ID, AUTH_GITHUB_SECRET
+cp .env.example .env     # set AUTH_SECRET, AUTH_GITHUB_ID, AUTH_GITHUB_SECRET
 docker compose up --build
-npx drizzle-kit push
-npm run dev
 ```
+
+Compose starts PostgreSQL, runs the migration, then starts the app on http://localhost:3000.
+
+Without Docker: set `DATABASE_URL` in `.env` to a Postgres you run yourself, then `npm install`, `npx drizzle-kit push` and `npm run dev`.
 
 For local development, set the OAuth app's callback URL to `http://localhost:3000/api/auth/callback/github`. A GitHub OAuth app allows only one callback URL, so use a separate OAuth app for local and deployed use.
 
 ### Deploy to AWS
 
 1. Build and push the image to ECR (the repository is created by `terraform apply`, so apply once first, or create the repository, then push).
-2. Provide secrets through a git-ignored `terraform.tfvars` (never commit it).
+2. Copy `terraform/terraform.tfvars.example` to `terraform/terraform.tfvars` and fill in the secrets. The file is git-ignored; never commit it.
 3. Apply:
 
    ```bash
@@ -232,11 +233,9 @@ terraform/
 | --- | --- |
 | ![Dashboard](docs/screenshots/dashboard.png) | ![Contributions](docs/screenshots/contributions.png) |
 
-| Terraform plan (1/3) | Terraform plan (2/3)  | Terraform plan (3/3) |
+| Terraform plan (1/3) | Terraform plan (2/3) | Terraform plan (3/3) |
 | --- | --- | --- |
-| ![Plan 1](docs/screenshots/terraform-plan-1.png) | ![Plan 2](docs/screenshots/terraform-plan-2.png) |
-
-| ![Plan 3](docs/screenshots/terraform-plan-3.png) |
+| ![Plan 1](docs/screenshots/terraform-plan-1.png) | ![Plan 2](docs/screenshots/terraform-plan-2.png) | ![Plan 3](docs/screenshots/terraform-plan-3.png) |
 
 ## Roadmap
 
@@ -244,9 +243,10 @@ terraform/
 - [ ] S3 remote state with locking
 - [ ] Custom domain with ACM, TLS end to end
 - [ ] Secret custom origin header enforced in middleware
-- [ ] Move secrets to Terraform `sensitive` variables, then Secrets Manager with rotation
+- [x] Secrets supplied as Terraform `sensitive` variables, kept out of git
+- [ ] Secrets Manager with rotation
 - [ ] Repeatable migration step in the pipeline
 
 ## License
 
-MIT
+MIT. See [LICENSE](LICENSE).
