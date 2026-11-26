@@ -1,7 +1,7 @@
 # ==========================================
 # STAGE 1: BUILD (Has tools, but stays in cache)
 # ==========================================
-FROM node:20-slim AS builder
+FROM node:25-slim AS builder
 
 WORKDIR /app
 
