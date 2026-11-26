@@ -196,7 +196,9 @@ For local development, set the OAuth app's callback URL to `http://localhost:300
    terraform apply
    ```
 
-   CloudFront takes a few minutes to create.
+   CloudFront takes a few minutes to create. Re-run `terraform apply` after
+   changes to the GitHub OIDC trust policy in `terraform/github_oidc.tf`; the
+   deploy workflow cannot assume its AWS role until that policy is applied.
 4. Set the GitHub OAuth app's URLs from the Terraform outputs:
 
    ```bash
