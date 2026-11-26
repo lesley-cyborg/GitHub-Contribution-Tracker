@@ -12,6 +12,18 @@ variable "github_repo" {
   default     = "lesley-cyborg/GitHub-Contribution-Tracker"
 }
 
+variable "github_owner_id" {
+  description = "Immutable GitHub owner ID used in the OIDC subject claim"
+  type        = string
+  default     = "122064840"
+}
+
+variable "github_repository_id" {
+  description = "Immutable GitHub repository ID used in the OIDC subject claim"
+  type        = string
+  default     = "1468784912"
+}
+
 data "aws_caller_identity" "current" {}
 
 resource "aws_iam_openid_connect_provider" "github" {
@@ -32,7 +44,7 @@ resource "aws_iam_role" "github_deploy" {
       Condition = {
         StringEquals = {
           "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
-          "token.actions.githubusercontent.com:sub" = "repo:${var.github_repo}:ref:refs/heads/main"
+          "token.actions.githubusercontent.com:sub" = "repo:${replace(var.github_repo, "/", "@${var.github_owner_id}/")}@${var.github_repository_id}:ref:refs/heads/main"
         }
       }
     }]
